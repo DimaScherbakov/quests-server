@@ -22,7 +22,12 @@ app.get('/quest/:alias/:globalId', function (req, res) {
     return x.alias === req.params.alias && x.globalId.toString() === req.params.globalId
   });
   if (respQuest) {
-    // console.log(respQuest)
+    let passedQuests = JSON.parse(fs.readFileSync(path.join(__dirname, '../data/FinishedQuestsLeafs.json'), 'utf8'));
+    let passedQuestsCount = passedQuests.filter(obj => obj.questId == respQuest.id).length;
+    respQuest.passedQuestsCount = passedQuestsCount;
+    for(let i in respQuest){
+      console.log(respQuest[i])
+    }
     res.setHeader('Content-Type', 'application/json');
     return res.send(JSON.stringify(respQuest));
   }
